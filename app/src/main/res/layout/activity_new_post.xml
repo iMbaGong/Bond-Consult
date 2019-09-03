@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/title"/>
+    <EditText
+        android:id="@+id/edit_text"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textColorHint="#DCDCDC"
+        android:textCursorDrawable="@drawable/my_cursor"
+        android:minLines="4"
+        android:background="@drawable/edit_background"
+        android:hint="请输入要发布的内容"/>
+    <Button
+        android:id="@+id/add_picture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/add"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+
+
+
+</LinearLayout>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="top"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:paddingBottom="20dp"
+    android:background="@drawable/beautiful_linearlayout_border">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2">
+        <ImageView
+            android:id="@+id/poster_avatar"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="8"
+            android:textSize="16sp"
+            android:background="#FFF">
+            <TextView
+                android:id="@+id/poster_name"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:maxLines="1"
+                android:textColor="#000"
+                android:layout_weight="1"
+                android:textSize="20sp"
+                android:background="#FFF"
+                android:ellipsize="end"/>
+            <TextView
+                android:id="@+id/poster_time"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:maxLines="1"
+                android:textColor="#9F9F9F"
+                android:layout_weight="1"
+                android:textSize="14sp"
+                android:background="#FFF"
+                android:ellipsize="end"/>
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10">
+        <TextView
+            android:id="@+id/post_text"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textSize="16sp"
+            android:textColor="#000"
+            android:minLines="4"
+            android:maxLines="15"
+            android:ellipsize="end"/>
+        <ImageView
+            android:id="@+id/post_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="fitStart" />
+
+    </LinearLayout>
+</LinearLayout>
