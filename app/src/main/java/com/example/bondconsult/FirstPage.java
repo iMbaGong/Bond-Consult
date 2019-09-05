@@ -35,7 +35,7 @@ public class FirstPage extends AppCompatActivity implements View.OnClickListener
         switch (view.getId())
         {
             case R.id.rank_button:{
-                Intent intent=new Intent(FirstPage.this,BondRankActivity.class);
+                Intent intent=new Intent(FirstPage.this, BondRankActivity.class);
                 startActivity(intent);
             }
             break;

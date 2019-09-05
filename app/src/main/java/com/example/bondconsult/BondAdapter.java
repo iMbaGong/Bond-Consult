@@ -1,6 +1,7 @@
 package com.example.bondconsult;
 
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,46 +10,50 @@ import android.widget.TextView;
 
 import java.util.List;
 
-class BondAdapter extends RecyclerView.Adapter<BondAdapter.ViewHodler>  {
+class BondAdapter extends RecyclerView.Adapter<BondAdapter.ViewHolder>  {
 
-    private List<BondInfo> myInfoList;
+    private List<Bond> myBondList;
 
-    static class ViewHodler extends RecyclerView.ViewHolder{
+    static class ViewHolder extends RecyclerView.ViewHolder{
+        CardView cardView;
         TextView name;
-        TextView content;
-        public ViewHodler(View view)
+        TextView info;
+
+        public ViewHolder(View view)
         {
             super(view);
-            name=view.findViewById(R.id.info_name);
-            content=view.findViewById(R.id.info_content);
+            cardView=(CardView)view;
+            name=view.findViewById(R.id.item_name);
+            info=view.findViewById(R.id.item_info);
         }
     }
-    public BondAdapter(List<BondInfo> infoList){
-        myInfoList=infoList;
+    public BondAdapter(List<Bond> infoList){
+        myBondList=infoList;
     }
 
     @Override
-    public BondAdapter.ViewHodler onCreateViewHolder(ViewGroup parent, int viewType)
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         View view= LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.bond_info,parent,false);
-        final BondAdapter.ViewHodler hodler=new BondAdapter.ViewHodler(view);
+                .inflate(R.layout.bond_item,parent,false);
 
-        return hodler;
+
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(BondAdapter.ViewHodler holder, final int position)
+    public void onBindViewHolder(BondAdapter.ViewHolder holder, final int position)
     {
-        BondInfo bondInfo=myInfoList.get(position);
-        holder.name.setText(bondInfo.getName());
-        holder.content.setText(bondInfo.getContent());
+        Bond bond=myBondList.get(position);
+        holder.name.setText(bond.getNameAbbr());
+        String buf=bond.getCode()+"  "+bond.getName();
+        holder.info.setText(buf);
 
     }
 
     @Override
     public int getItemCount()
     {
-        return myInfoList.size();
+        return myBondList.size();
     }
 }
