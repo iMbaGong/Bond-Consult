@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 public class BondInfoActivity extends AppCompatActivity {
-
+/*******************债券详细信息******************/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

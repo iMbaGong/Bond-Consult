@@ -14,7 +14,7 @@ import android.widget.TextView;
 import java.util.List;
 
 class BondAdapter extends RecyclerView.Adapter<BondAdapter.ViewHolder>  {
-
+/*********************债券排名Adapter***********************/
     private List<Bond> myBondList;
     private Context context;
 
@@ -38,7 +38,7 @@ class BondAdapter extends RecyclerView.Adapter<BondAdapter.ViewHolder>  {
 
     @Override
     public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType)
-    {
+        {
         if(context==null){
             context=parent.getContext();
         }
