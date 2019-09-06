@@ -7,30 +7,31 @@ import org.litepal.crud.DataSupport;
 
 public class Bond extends DataSupport {
 
-    public Bond(JSONObject src){
+
+    static public Bond createIntanceByJson(JSONObject src){
+        Bond bond = new Bond();
         try{
-            id = src.getString("序号");
-            code = src.getString("债券代码");
-            nameAbbr = src.getString("债券简称");
-            name = src.getString("债券全称");
-            pledgeAbbr = src.getString("质押券简称");
-            pledgeCode = src.getString("质押券代码");
-            term = src.getString("期限(年)");
-            intBear = src.getString("计息方式");
-            intPay = src.getString("付息方式");
-            circulation = src.getString("发行量(亿元)");
-            listDate = src.getString("上市日期");
-            ddl = src.getString("到期日");
+            //id = src.getInt("序号");//Integer.parseInt(src.getString("序号"));
+            bond.setCode(src.getString("债券代码"));
+            bond.setNameAbbr(src.getString("债券简称"));
+            bond.setName(src.getString("债券全称"));
+            bond.setPledgeAbbr(src.getString("质押券简称"));
+            bond.setPledgeCode(src.getString("质押券代码"));
+            bond.setTerm(src.getString("期限(年)"));
+            bond.setIntBear(src.getString("计息方式"));
+            bond.setIntPay(src.getString("付息方式"));
+            bond.setCirculation(src.getString("发行量(亿元)"));
+            bond.setListDate(src.getString("上市日期"));
+            bond.setDdl(src.getString("到期日"));
         }catch (Exception e){
             e.printStackTrace();
         }
-
+        return bond;
     }
-
     /*public String string(){
         return
     }*/
-    private String id;
+    private int id;
     private String code;
     private String nameAbbr;
     private String name;
@@ -43,11 +44,11 @@ public class Bond extends DataSupport {
     private String listDate;
     private String ddl;
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

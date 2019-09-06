@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import org.litepal.LitePal;
+import org.litepal.crud.DataSupport;
+
 public class FirstPage extends AppCompatActivity implements View.OnClickListener {
 
     @Override
@@ -28,6 +31,8 @@ public class FirstPage extends AppCompatActivity implements View.OnClickListener
         newsButton.setOnClickListener(this);
         postButton.setOnClickListener(this);
         userButton.setOnClickListener(this);
+
+        LitePal.getDatabase();
     }
 
     @Override
@@ -40,7 +45,11 @@ public class FirstPage extends AppCompatActivity implements View.OnClickListener
             }
             break;
             case R.id.news_button:{
-
+                DataSupport.deleteAll(Bond.class);
+                if(BondRankActivity.bondList!=null){
+                    BondRankActivity.bondList.clear();
+                    BondRankActivity.bondList=null;
+                }
             }
             break;
             case R.id.post_button:{

@@ -12,11 +12,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.json.JSONArray;
-import org.litepal.LitePal;
 import org.litepal.crud.DataSupport;
 
 import java.util.List;
@@ -27,7 +25,7 @@ import okhttp3.Response;
 
 public class BondRankActivity extends AppCompatActivity {
 
-    private List<Bond> bondList;
+    static public List<Bond> bondList;
     private ProgressDialog progressDialog;
     private RecyclerView recyclerView;
     private BondAdapter bondAdapter;
@@ -35,7 +33,7 @@ public class BondRankActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_national_debt);
+        setContentView(R.layout.activity_bond_rank);
         //set actionbar
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -54,8 +52,8 @@ public class BondRankActivity extends AppCompatActivity {
         });
 
         //load data
-        LitePal.getDatabase();
-        bondList=DataSupport.findAll(Bond.class);
+        if (bondList == null)
+            bondList=DataSupport.findAll(Bond.class);
         Log.d("database", "size:"+bondList.size());
         if(bondList.size()==0){
             progressDialog = new ProgressDialog(BondRankActivity.this);
@@ -137,7 +135,7 @@ public class BondRankActivity extends AppCompatActivity {
         try{
             JSONArray jsonArray = new JSONArray(data);
             for (int i=0;i<jsonArray.length();i++){
-                Bond bond = new Bond(jsonArray.getJSONObject(i));
+                Bond bond =Bond.createIntanceByJson(jsonArray.getJSONObject(i));
                 bondList.add(bond);
                 //bondAdapter.notifyItemInserted(i);
                 bond.save();
@@ -145,7 +143,8 @@ public class BondRankActivity extends AppCompatActivity {
             }
             Log.d("finish", "parseJSONWithJSONObject: data save finish");
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
+            Log.d("Error", "something wrong in json");
         }
     }
 
