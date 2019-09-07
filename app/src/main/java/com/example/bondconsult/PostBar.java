@@ -115,7 +115,7 @@ public class PostBar extends AppCompatActivity {
 
     public void addPost(Bitmap poster_avatar, String poster_name, String post_text, Bitmap post_image,String post_time)
     {
-        Post post=new Post(poster_avatar,poster_name,post_text,post_image,post_time);
+        Post post=new Post(poster_avatar,poster_name,post_text,post_image,post_time,"Hello");
         postList.add(post);
         postAdapter.notifyItemInserted(postList.size()-1);
     }

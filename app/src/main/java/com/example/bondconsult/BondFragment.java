@@ -14,7 +14,10 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Fragment_Bond extends Fragment {
+public class BondFragment extends Fragment {
+
+    static public List<String> mBondKind;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -22,10 +25,14 @@ public class Fragment_Bond extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.bond_kind_rev);
         MainActivity context = (MainActivity)getActivity();
         recyclerView.setLayoutManager(new GridLayoutManager(context,2));
-        List<String> list = new ArrayList<>();
-        list.add("记账式\n国债");
-        list.add("地方政\n府债券");
-        recyclerView.setAdapter(new BondKindAdapter(list));
+        initList();
+        recyclerView.setAdapter(new BondKindAdapter(mBondKind));
         return view;
+    }
+
+    private void initList(){
+        mBondKind = new ArrayList<>();
+        mBondKind.add("记账式\n国债");
+        mBondKind.add("地方政\n府债券");
     }
 }

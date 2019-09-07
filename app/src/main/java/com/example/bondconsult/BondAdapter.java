@@ -43,7 +43,7 @@ class BondAdapter extends RecyclerView.Adapter<BondAdapter.ViewHolder>  {
             context=parent.getContext();
         }
         View view= LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.bond_item,parent,false);
+                .inflate(R.layout.item_bond,parent,false);
 
         final ViewHolder viewHolder = new ViewHolder(view);
         viewHolder.cardView.setOnClickListener(new View.OnClickListener() {

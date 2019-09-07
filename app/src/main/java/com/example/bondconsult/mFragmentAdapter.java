@@ -18,11 +18,11 @@ public class mFragmentAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return new Fragment_Bond();
+            return new BondFragment();
         } else if (position == 1) {
-            return new Fragment_Bond();
+            return new PostFragment();
         }else if (position==2){
-            return new Fragment_Bond();
+            return new BondFragment();
         }
         return null;
     }

@@ -41,7 +41,7 @@ public class BondKindAdapter extends RecyclerView.Adapter<BondKindAdapter.ViewHo
         }
 
         View view= LayoutInflater.from(context)
-                .inflate(R.layout.bondkind_item,viewGroup,false);
+                .inflate(R.layout.item_bond_kind,viewGroup,false);
         final BondKindAdapter.ViewHolder viewHolder = new BondKindAdapter.ViewHolder(view);
         viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
