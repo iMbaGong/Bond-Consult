@@ -47,11 +47,12 @@
             app:srcCompat="@drawable/icon_compile" />
     </android.support.design.widget.CoordinatorLayout>
 
-    <TextView
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#FFF"
-        android:text="UserMenu"/>
+        app:menu="@menu/nav_sign"
+        app:headerLayout="@layout/nav_header"/>
 
 </android.support.v4.widget.DrawerLayout>

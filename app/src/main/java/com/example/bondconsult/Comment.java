@@ -7,6 +7,7 @@ import android.widget.ScrollView;
 public class Comment {
     private Bitmap commentAvatar;
     private String commentName;
+    private User user;
     private String commentContent;
     private String commentTime;
 

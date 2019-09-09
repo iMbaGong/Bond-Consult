@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_sign_in"
+            android:icon="@drawable/login"
+            android:title="Sign in"/>
+        <item
+            android:id="@+id/nav_sign_on"
+            android:icon="@drawable/sign_on"
+            android:title="Sign on"/>
+    </group>
+</menu>

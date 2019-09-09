@@ -92,8 +92,8 @@ public class PostBar extends AppCompatActivity {
 
     private void initPost()
     {
-        Bitmap avatar = BitmapFactory.decodeResource(getResources(),R.drawable.totoro);
-        Bitmap image= BitmapFactory.decodeResource(getResources(),R.drawable.avatar);
+        Bitmap avatar = BitmapFactory.decodeResource(getResources(),R.drawable.avatar);
+        Bitmap image= BitmapFactory.decodeResource(getResources(),R.drawable.totoro);
         String name="name";
         String time="2019-09-01";
         String text="Hello!Hello!Hello!Hello!Hello!Hello!\n" +
