@@ -6,7 +6,7 @@
             android:icon="@drawable/login"
             android:title="Sign in"/>
         <item
-            android:id="@+id/nav_sign_on"
+            android:id="@+id/nav_sign_up"
             android:icon="@drawable/sign_on"
             android:title="Sign on"/>
     </group>

@@ -70,6 +70,12 @@ public class SignUpActivity extends AppCompatActivity {
                     if(!passwordText.getText().toString().equals(repasswordText.getText().toString())){
                         Toast.makeText(SignUpActivity.this,"请确认两次输入的密码相同",Toast.LENGTH_SHORT).show();
                     }else {
+                        Intent intent = new Intent();
+                        User user = new User();
+                        user.setAvatar(userAvatar.getDrawable());
+                        user.setName(usernameText.getText().toString());
+                        intent.putExtra("usr_data",user);
+                        setResult(RESULT_OK,intent);
                         finish();
                     }
                 }

@@ -33,8 +33,12 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(!(usernameText.getText().toString().isEmpty()||passwordText.getText().toString().isEmpty())){
-                    Intent intent=new Intent(LoginActivity.this,FirstPage.class);
-                    startActivity(intent);
+                    User user = new User();
+                    user.setName(usernameText.getText().toString());
+                    Intent intent=new Intent();
+                    intent.putExtra("usr_data",user);
+                    setResult(RESULT_OK,intent);
+                    finish();
                 }
                 else {
                     Toast.makeText(LoginActivity.this,"请输入有效的用户名和密码",Toast.LENGTH_SHORT).show();

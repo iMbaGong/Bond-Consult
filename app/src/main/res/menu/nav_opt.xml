@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_login"
+            android:id="@+id/nav_center"
             android:icon="@drawable/login"
-            android:title="Personal"/>
+            android:title="Personal Center"/>
         <item
-            android:id="@+id/nav_sign_on"
+            android:id="@+id/nav_setting"
             android:icon="@drawable/sign_on"
             android:title="Setting"/>
     </group>

@@ -2,6 +2,7 @@ package com.example.bondconsult;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -11,14 +12,22 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
+    private CircleImageView circleImageView;
+    private TextView usrName;
 
+    final int SIGN_IN = 1;
+    final int SIGN_UP = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,14 +65,23 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()){
                     case R.id.nav_sign_in:
-                        Intent intent = new Intent(MainActivity.this,SignUpActivity.class);
-                        startActivityForResult(intent,1);
+                        Intent intent1 = new Intent(MainActivity.this,LoginActivity.class);
+                        startActivityForResult(intent1,SIGN_IN);
+                        break;
+                    case R.id.nav_sign_up:
+                        Intent intent2 = new Intent(MainActivity.this,SignUpActivity.class);
+                        startActivityForResult(intent2,SIGN_UP);
                         break;
                 }
                 return true;
             }
 
         });
+
+        View headerView = navigationView.getHeaderView(0);
+        circleImageView =(CircleImageView)headerView.findViewById(R.id.nav_avatar);
+        usrName = (TextView)headerView.findViewById(R.id.nav_name);
+
     }
 
 
@@ -75,5 +93,28 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Log.d("back", "succ");
+        switch (requestCode){
+            case SIGN_IN:
+                if(resultCode==RESULT_OK){
+                    User user1 = (User)data.getSerializableExtra("usr_data");
+                    //todo avator from data base
+                    usrName.setText(user1.getName());
+                    Log.d("back", user1.getName());
+
+                }
+                break;
+            case SIGN_UP:
+                if(resultCode==RESULT_OK){
+                    User user2 = (User)data.getSerializableExtra("usr_data");
+                    Log.d("back", user2.getName());
+                    circleImageView.setImageDrawable(user2.getAvatar());
+                    usrName.setText(user2.getName());
+                }
+        }
     }
 }
