@@ -1,6 +1,7 @@
 package com.example.bondconsult;
 
 
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
 import java.io.Serializable;
@@ -9,7 +10,7 @@ public class User implements Serializable {
 
     private int id;
     private String name;
-    private Drawable avatar;
+    private byte[] avatar;
 
     public String getName() {
         return name;
@@ -19,11 +20,11 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public Drawable getAvatar() {
+    public byte[] getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(Drawable avatar) {
+    public void setAvatar(byte[] avatar) {
         this.avatar = avatar;
     }
 

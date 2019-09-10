@@ -1,6 +1,8 @@
 package com.example.bondconsult;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -80,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
         View headerView = navigationView.getHeaderView(0);
         circleImageView =(CircleImageView)headerView.findViewById(R.id.nav_avatar);
+
         usrName = (TextView)headerView.findViewById(R.id.nav_name);
 
     }
@@ -104,15 +107,13 @@ public class MainActivity extends AppCompatActivity {
                     User user1 = (User)data.getSerializableExtra("usr_data");
                     //todo avator from data base
                     usrName.setText(user1.getName());
-                    Log.d("back", user1.getName());
 
                 }
                 break;
             case SIGN_UP:
                 if(resultCode==RESULT_OK){
                     User user2 = (User)data.getSerializableExtra("usr_data");
-                    Log.d("back", user2.getName());
-                    circleImageView.setImageDrawable(user2.getAvatar());
+                    circleImageView.setImageBitmap(Util.byte2Bitmap(user2.getAvatar()));
                     usrName.setText(user2.getName());
                 }
         }
