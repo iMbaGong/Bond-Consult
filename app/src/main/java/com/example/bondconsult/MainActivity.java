@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
             case SIGN_IN:
                 if(resultCode==RESULT_OK){
                     User user1 = (User)data.getSerializableExtra("usr_data");
-                    //todo avator from data base
+                    circleImageView.setImageBitmap(Util.byte2Bitmap(user1.getAvatar()));
                     usrName.setText(user1.getName());
 
                 }

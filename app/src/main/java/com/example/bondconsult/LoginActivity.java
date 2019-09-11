@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import org.json.JSONObject;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.MultipartBody;
@@ -96,10 +98,11 @@ public class LoginActivity extends AppCompatActivity {
                         .post(builder.build())
                         .build();
                 Response response = client.newCall(request).execute();
-                Log.d("res", response.body().string());
-                Gson gson = new Gson();
-                User user = gson.fromJson(response.body().string(),User.class);
-                Log.d("res", "id:"+user.getId()+"; avatar:"+user.getAvatar());
+                String resBody = response.body().string();
+                Log.d("res", "length:"+resBody.length());
+                JSONObject jsonObject = new JSONObject(resBody);
+                User user = User.createByJson(jsonObject);
+                Log.d("res", "id:"+user.getId()+"; avatarLength:"+user.getAvatar().length);
                 if(user.getId()==-1){
                     res=false;
                 }

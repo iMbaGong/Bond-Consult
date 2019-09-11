@@ -2,6 +2,7 @@ package com.example.bondconsult;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -18,12 +20,16 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -43,6 +49,10 @@ public class SignUpActivity extends AppCompatActivity {
 
     private ImageView userAvatar;
     private Bitmap avatar;
+    EditText usernameText;
+    EditText passwordText;
+
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +66,8 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         Button signupButton=(Button)findViewById(R.id.signup_button);
-        final EditText usernameText=(EditText)findViewById(R.id.username_text);
-        final EditText passwordText=(EditText)findViewById(R.id.password_text);
+        usernameText=(EditText)findViewById(R.id.username_text);
+        passwordText=(EditText)findViewById(R.id.password_text);
         final EditText repasswordText=(EditText)findViewById(R.id.repassword_text);
         userAvatar=(ImageView)findViewById(R.id.user_avatar);
 
@@ -86,41 +96,7 @@ public class SignUpActivity extends AppCompatActivity {
                     if(!passwordText.getText().toString().equals(repasswordText.getText().toString())){
                         Toast.makeText(SignUpActivity.this,"请确认两次输入的密码相同",Toast.LENGTH_SHORT).show();
                     }else {
-                        Intent intent = new Intent();
-                        User user = new User();
-                        user.setAvatar(Util.bitmap2Bytes(avatar));
-                        user.setName(usernameText.getText().toString());
-                        intent.putExtra("usr_data",user);
-                        setResult(RESULT_OK,intent);
-
-                        //上传数据
-                        /*ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                        avatar.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream);*/
-                        MultipartBody.Builder builder = new MultipartBody.Builder();
-                        builder.setType(MultipartBody.FORM);
-                        builder.addFormDataPart("avatar",user.getName()+"_avatar",
-                                RequestBody.create(MediaType.parse("image/png"),Util.bitmap2Bytes(avatar)));
-                        builder.addFormDataPart("name",user.getName());
-                        builder.addFormDataPart("psw",passwordText.getText().toString());//todo 加密
-                        Request request = new Request.Builder()
-                                .url("http://108.61.223.76/sign_up.php")
-                                .post(builder.build())
-                                .build();
-                        OkHttpClient client = new OkHttpClient();
-
-                        client.newCall(request).enqueue(new Callback() {
-                            @Override
-                            public void onFailure(Call call, IOException e) {
-                                Log.d("response", e.getMessage());
-                            }
-
-                            @Override
-                            public void onResponse(Call call, Response response) throws IOException {
-                                Log.d("response", response.body().string());
-                            }
-                        });
-
-                        finish();
+                        new SignUpTask().execute();
                     }
                 }
                 else {
@@ -235,4 +211,73 @@ public class SignUpActivity extends AppCompatActivity {
             Toast.makeText(SignUpActivity.this,"failed to get image",Toast.LENGTH_SHORT).show();
         }
     }
+
+    public class SignUpTask extends AsyncTask<Void,Integer,Boolean>{
+
+        private boolean res = false;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(SignUpActivity.this);
+            progressDialog.setCancelable(false);
+            progressDialog.setTitle("Connecting");
+            progressDialog.setMessage("Loading");
+            progressDialog.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            String strAvatar = Base64.encodeToString(Util.bitmap2Bytes(avatar),Base64.DEFAULT);
+            Log.d("strAv", "len:"+strAvatar.length());
+            try{
+                MultipartBody.Builder builder = new MultipartBody.Builder();
+                builder.setType(MultipartBody.FORM);
+                        /*builder.addFormDataPart("avatar",user.getName()+"_avatar",
+                                RequestBody.create(MediaType.parse("image/png"),byteAvatar));*/
+                builder.addFormDataPart("avatar",strAvatar);
+                builder.addFormDataPart("name",usernameText.getText().toString());
+                builder.addFormDataPart("psw",passwordText.getText().toString());//todo 加密
+                Request request = new Request.Builder()
+                        .url("http://108.61.223.76/sign_up.php")
+                        .post(builder.build())
+                        .build();
+                OkHttpClient client = new OkHttpClient.Builder()
+                        .readTimeout(0,TimeUnit.SECONDS)
+                        .connectTimeout(0, TimeUnit.SECONDS)
+                        .writeTimeout(0,TimeUnit.SECONDS)
+                        .build();
+                Response response = client.newCall(request).execute();
+                String resBody = response.body().string();
+                Log.d("res", resBody);
+                if(new JSONObject(resBody).getString("state").equals("success")){
+                    Intent intent = new Intent();
+                    User user = new User();
+                    user.setAvatar(Util.bitmap2Bytes(avatar));
+                    user.setName(usernameText.getText().toString());
+                    intent.putExtra("usr_data",user);
+                    setResult(RESULT_OK,intent);
+                    res=true;
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            progressDialog.dismiss();
+            if(!aBoolean){
+                Toast.makeText(SignUpActivity.this,"Fail in connect",Toast.LENGTH_SHORT).show();
+            }else if(res){
+                finish();
+            }
+            else {
+                Toast.makeText(SignUpActivity.this,"Exist account",Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 }
