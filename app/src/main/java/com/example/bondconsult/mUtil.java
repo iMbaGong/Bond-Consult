@@ -2,12 +2,15 @@ package com.example.bondconsult;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 import java.util.TimeZone;
 
 public class mUtil {
+
+    static User user;
 
     static byte[] bitmap2Bytes(Bitmap bitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -30,5 +33,13 @@ public class mUtil {
                 +calendar.get(Calendar.DATE)+" "
                 +calendar.get(Calendar.HOUR)+":"
                 +calendar.get(Calendar.MINUTE);
+    }
+
+    static Bitmap base64ToBitmap(String src){
+        return byte2Bitmap(Base64.decode(src,Base64.DEFAULT));
+    }
+
+    static String bitmapToBase64(Bitmap src){
+       return Base64.encodeToString(mUtil.bitmap2Bytes(src),Base64.DEFAULT);
     }
 }

@@ -30,20 +30,23 @@ import okhttp3.Response;
 
 public class PostFragment extends Fragment {
 
-    public List<Post> mPostList;
+    static List<Post> mPostList;
     RecyclerView recyclerView;
     PostListAdapter postListAdapter;
     View view;
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_post,container,false);
         mPostList = new ArrayList<>();
-        new DownloadTask().execute();
         return view;
     }
-
+    public void startTask(){
+        new DownloadTask().execute();
+    }
 
     public class DownloadTask extends AsyncTask<Void,Integer,Boolean>{
 
@@ -62,21 +65,22 @@ public class PostFragment extends Fragment {
         @Override
         protected Boolean doInBackground(Void... voids) {
             try{
+                if(mPostList.size()>0)mPostList.clear();
                 OkHttpClient client = new OkHttpClient.Builder()
                         .readTimeout(0, TimeUnit.SECONDS)
                         .connectTimeout(0, TimeUnit.SECONDS)
                         .writeTimeout(0,TimeUnit.SECONDS)
                         .build();
-                MultipartBody.Builder builder = new MultipartBody.Builder();
+                /*MultipartBody.Builder builder = new MultipartBody.Builder();
                 builder.setType(MultipartBody.FORM);
-                builder.addFormDataPart("recognize","tongji");
+                builder.addFormDataPart("recognize","tongji");*/
                 Request request = new Request.Builder()
                         .url("http://108.61.223.76/get_posts.php")
-                        .post(builder.build())
+                        //.post(builder.build())
                         .build();
                 Response response = client.newCall(request).execute();
                 String resBody = response.body().string();
-                Log.d("res", "length:"+resBody.length());
+                Log.d("res in postFrag", "length:"+resBody.length());
                 JSONArray jsonArray = new JSONArray(resBody);
                 for(int i=0;i<jsonArray.length();i++){
                     JSONObject  jsonObject = jsonArray.getJSONObject(i);
@@ -86,7 +90,7 @@ public class PostFragment extends Fragment {
                             jsonObject.getString("time"),
                             jsonObject.getString("user"),
                             jsonObject.getInt("thumb"),
-                            jsonObject.getInt("comms")
+                            jsonObject.getInt("comment_num")//todo comments
                     ));
 
                 }
@@ -99,6 +103,7 @@ public class PostFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
+            progressDialog.dismiss();
             recyclerView = view.findViewById(R.id.post_list_rev);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             postListAdapter = new PostListAdapter(mPostList);

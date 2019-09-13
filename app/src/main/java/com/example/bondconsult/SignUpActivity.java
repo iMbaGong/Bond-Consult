@@ -244,7 +244,7 @@ public class SignUpActivity extends AppCompatActivity {
                 if(new JSONObject(resBody).getString("state").equals("success")){
                     Intent intent = new Intent();
                     User user = new User();
-                    user.setAvatar(mUtil.bitmap2Bytes(avatar));
+                    user.setAvatar(strAvatar);
                     user.setName(usernameText.getText().toString());
                     intent.putExtra("usr_data",user);
                     setResult(RESULT_OK,intent);

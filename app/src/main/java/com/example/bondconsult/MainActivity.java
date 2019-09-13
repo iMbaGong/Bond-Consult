@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private User user;
     ActionBar actionBar;
     mFragmentAdapter mFragmentAdapter;
+    PostFragment postFragment;
 
     final int SIGN_IN = 1;
     final int SIGN_UP = 2;
@@ -41,6 +43,24 @@ public class MainActivity extends AppCompatActivity {
 
         mFragmentAdapter = new mFragmentAdapter(getSupportFragmentManager());
         ViewPager viewPager = (ViewPager)findViewById(R.id.view_pager);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                if(i==1)
+                postFragment = (PostFragment)mFragmentAdapter.getFragment(1);
+                postFragment.startTask();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
         viewPager.setAdapter(mFragmentAdapter);
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
@@ -53,7 +73,14 @@ public class MainActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(MainActivity.this,NewPostActivity.class),NEW_POST);
+                if(user!=null){
+                    Intent intent = new Intent(MainActivity.this, NewPostActivity.class);
+                    //intent.putExtra("user",user);
+                    startActivityForResult(intent,NEW_POST);
+                }else {
+                    Toast.makeText(MainActivity.this, "please login first", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -110,7 +137,8 @@ public class MainActivity extends AppCompatActivity {
                 case SIGN_IN:
                 case SIGN_UP:
                     user = (User)data.getSerializableExtra("usr_data");
-                    Bitmap avatar = mUtil.byte2Bitmap(user.getAvatar());
+                    mUtil.user=user;
+                    Bitmap avatar = user.getBitmap();
                     actionBar.setHomeAsUpIndicator(new BitmapDrawable(avatar));
                     circleImageView.setImageBitmap(avatar);
                     usrName.setText(user.getName());
@@ -122,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
                         postFragment.mPostList.add(post);
                     }
                     if(postFragment.postListAdapter!=null){
-                        postFragment.postListAdapter.notifyItemInserted(postFragment.mPostList.size());
+                        postFragment.postListAdapter.notifyItemInserted(postFragment.mPostList.size()-1);
                     }
                     break;
 

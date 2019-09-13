@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +14,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
-import java.util.zip.Inflater;
+
 
 public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.ViewHolder> {
 
-    public static List<Post> mPostList;
+    public  List<Post> mPostList;
     private Context context;
 
     public PostListAdapter (List<Post> src){
@@ -62,8 +63,10 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 // TODO: 点击帖子进入
-                Toast.makeText(context,"Post",Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(context ,PostActivity.class);
+                int position = holder.getAdapterPosition();
+                Log.d("get the position", ":"+position);
+                Intent intent = new Intent(context,PostActivity.class);
+                intent.putExtra("position",position);
                 context.startActivity(intent);
             }
         });
@@ -82,4 +85,6 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.ViewHo
     public int getItemCount() {
         return mPostList.size();
     }
+
+
 }

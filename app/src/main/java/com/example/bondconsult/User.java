@@ -17,7 +17,7 @@ public class User implements Serializable {
             user.setId(jsonObject.getInt("id"));
             user.setName(jsonObject.getString("name"));
             String strAvatar = jsonObject.getString("avatar");
-            user.setAvatar(Base64.decode(strAvatar,Base64.DEFAULT));
+            user.setAvatar(strAvatar);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -26,7 +26,7 @@ public class User implements Serializable {
 
     private int id;
     private String name;
-    private byte[] avatar;
+    private String avatar;
 
     public String getName() {
         return name;
@@ -36,11 +36,11 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public byte[] getAvatar() {
+    public String getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(byte[] avatar) {
+    public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
 
@@ -51,4 +51,11 @@ public class User implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
+
+    public Bitmap getBitmap() {
+        return mUtil.base64ToBitmap(avatar);
+    }
+
+
+
 }

@@ -252,7 +252,8 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
         protected Boolean doInBackground(Void... voids) {
             try{
                 Intent intent=getIntent();
-                User user = (User) intent.getSerializableExtra("user");
+                User user = mUtil.user;
+                //User user = (User) intent.getSerializableExtra("user");
                 String time = mUtil.getCurrentTime();
                 Post post = new Post(
                         postTitle.getText().toString(),
@@ -272,7 +273,7 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
                 builder.addFormDataPart("title",postTitle.getText().toString());
                 builder.addFormDataPart("user",new Gson().toJson(user));
                 builder.addFormDataPart("text",editText.getText().toString());
-
+                builder.addFormDataPart("time",time);
                 Request request = new Request.Builder()
                         .url("http://108.61.223.76/new_post.php")
                         .post(builder.build())
@@ -282,7 +283,10 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
                 JSONObject jsonObject = new JSONObject(strRes);
                 if(jsonObject.getString("state").equals("success")){
                     res = true;
-                    setResult(RESULT_OK,intent);
+                    Intent intent1 = new Intent();
+                    intent1.putExtra("post",post);
+                    PostFragment.mPostList.add(post);//todo it works?
+                    setResult(RESULT_OK,intent1);
                 }
             }catch (Exception e){
                 e.printStackTrace();
@@ -299,6 +303,7 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
             if(!aBoolean){
                 Toast.makeText(NewPostActivity.this,"Fail in connect",Toast.LENGTH_SHORT).show();
             }else if(res){
+
                 finish();
             }
             else {

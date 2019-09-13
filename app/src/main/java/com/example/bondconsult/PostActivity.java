@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,11 +22,13 @@ import java.util.List;
 public class PostActivity extends AppCompatActivity implements View.OnClickListener {
     private RecyclerView commentsView;
     private CommentAdapter commentAdapter;
-    private List<Comment> commentList=new ArrayList<>();
-
+    private List<Comment> commentList;
+    private Post post;
     private TextView thumbupNum;
     private TextView forwardNum;
     private TextView commentNum;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,26 +46,21 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
         TextView postText=(TextView)findViewById(R.id.post_text);
         ImageView postImage=(ImageView)findViewById(R.id.post_image);
 
-        //TODO：设置帖子内容
-        postAvatar.setImageResource(R.drawable.avatar);
-        posterName.setText("Name");
-        postTime.setText("2019-09-01");
-        postText.setText("Hello!Hello!Hello!Hello!Hello!Hello!\n" +
-                "Hello!Hello!Hello!Hello!Hello!Hello!\n" +
-                "Hello!Hello!Hello!Hello!Hello!Hello!\n" +
-                "Hello!Hello!Hello!Hello!Hello!Hello!\n" +
-                "Hello!Hello!Hello!Hello!Hello!Hello!\n" +
-                "Hello!Hello!Hello!Hello!Hello!Hello!\n" +
-                "Hello!Hello!Hello!Hello!Hello!Hello!\n" +
-                "Hello!Hello!Hello!Hello!Hello!Hello!\n" +
-                "Hello!Hello!Hello!Hello!Hello!Hello!\n" +
-                "Hello!Hello!Hello!Hello!Hello!Hello!\n" +
-                "Hello!Hello!Hello!Hello!Hello!Hello!\n" +
-                "Hello!Hello!Hello!Hello!Hello!Hello!\n" +
-                "Hello!Hello!Hello!Hello!Hello!Hello!\n" +
-                "Hello!Hello!Hello!Hello!Hello!Hello!");
-        postImage.setImageResource(R.drawable.totoro);
 
+        int position = getIntent().getIntExtra("position",-1);
+        post = PostFragment.mPostList.get(position);
+        if(post.getCommentList()==null)
+            commentList = new ArrayList<>();
+        else commentList = post.getCommentList();
+
+
+        //TODO：设置帖子内容
+        postAvatar.setImageBitmap(post.getPoster_avatar());//todo title
+        posterName.setText(post.getPoster_name());
+        postTime.setText(post.getPost_time());
+        postText.setText(post.getPost_text());
+        //postImage.setImageResource(R.drawable.totoro);
+        //todo image
 
         commentsView=(RecyclerView)findViewById(R.id.comment_view);
 
@@ -119,24 +117,18 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
             case 1:
                 if(resultCode==RESULT_OK){
                     String commentText=data.getStringExtra("comment_text");
-                    Bitmap avatar= BitmapFactory.decodeResource(getResources(),R.drawable.avatar);
-                    String name="name";
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                    Date date = new Date(System.currentTimeMillis());
-                    String time=simpleDateFormat.format(date);
-
-                    addPost(avatar,name,commentText,time);
+                    commentList.add(new Comment(mUtil.user,
+                            commentText,
+                            mUtil.getCurrentTime())
+                    );
+                    commentAdapter.notifyItemInserted(commentList.size()-1);
                     commentNum.setText(String.valueOf(commentList.size()));
+                    post.addCommNum(1);
                 }
                 break;
                 default:
         }
     }
 
-    public void addPost(Bitmap comment_avatar, String comment_name, String comment_content,  String comment_time)
-    {
-        Comment comment=new Comment(comment_avatar,comment_name,comment_content,comment_time);
-        commentList.add(comment);
-        commentAdapter.notifyItemInserted(commentList.size()-1);
-    }
+
 }

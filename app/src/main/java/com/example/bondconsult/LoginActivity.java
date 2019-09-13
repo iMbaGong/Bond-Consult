@@ -102,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d("res", "length:"+resBody.length());
                 JSONObject jsonObject = new JSONObject(resBody);
                 User user = User.createByJson(jsonObject);
-                Log.d("res", "id:"+user.getId()+"; avatarLength:"+user.getAvatar().length);
+                Log.d("res", "id:"+user.getId()+"; avatarLength:"+user.getAvatar().length());
                 if(user.getId()==-1){
                     res=false;
                 }
