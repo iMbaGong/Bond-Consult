@@ -43,7 +43,7 @@ public class CommentPostActivity extends AppCompatActivity implements View.OnCli
             }
             break;
             case R.id.send_button:{
-                Intent intent=new Intent(CommentPostActivity.this,PostActivity.class);
+                Intent intent=new Intent();
                 intent.putExtra("comment_text",commentText.getText().toString());
                 setResult(RESULT_OK,intent);
                 finish();

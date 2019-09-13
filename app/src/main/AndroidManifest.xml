@@ -22,11 +22,8 @@
         <activity android:name=".BondRankActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".FirstPage">
-        </activity>
         <activity android:name=".CommentPostActivity" />
         <activity android:name=".PostActivity" />
-        <activity android:name=".PostBar" />
         <activity android:name=".NewPostActivity" />
 
         <provider

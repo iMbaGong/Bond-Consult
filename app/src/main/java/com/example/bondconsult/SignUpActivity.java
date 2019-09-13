@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -29,20 +28,13 @@ import android.widget.Toast;
 
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -229,7 +221,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... voids) {
-            String strAvatar = Base64.encodeToString(Util.bitmap2Bytes(avatar),Base64.DEFAULT);
+            String strAvatar = Base64.encodeToString(mUtil.bitmap2Bytes(avatar),Base64.DEFAULT);
             Log.d("strAv", "len:"+strAvatar.length());
             try{
                 MultipartBody.Builder builder = new MultipartBody.Builder();
@@ -254,7 +246,7 @@ public class SignUpActivity extends AppCompatActivity {
                 if(new JSONObject(resBody).getString("state").equals("success")){
                     Intent intent = new Intent();
                     User user = new User();
-                    user.setAvatar(Util.bitmap2Bytes(avatar));
+                    user.setAvatar(mUtil.bitmap2Bytes(avatar));
                     user.setName(usernameText.getText().toString());
                     intent.putExtra("usr_data",user);
                     setResult(RESULT_OK,intent);

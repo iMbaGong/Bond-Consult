@@ -2,7 +2,7 @@ package com.example.bondconsult;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -29,16 +29,19 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private CircleImageView circleImageView;
     private TextView usrName;
+    private User user;
+    ActionBar actionBar;
+    mFragmentAdapter mFragmentAdapter;
 
     final int SIGN_IN = 1;
     final int SIGN_UP = 2;
-
+    final int NEW_POST = 3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mFragmentAdapter mFragmentAdapter = new mFragmentAdapter(getSupportFragmentManager());
+        mFragmentAdapter = new mFragmentAdapter(getSupportFragmentManager());
         ViewPager viewPager = (ViewPager)findViewById(R.id.view_pager);
         viewPager.setAdapter(mFragmentAdapter);
         viewPager.setPageTransformer(true, new RotateUpTransformer());
@@ -53,15 +56,16 @@ public class MainActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,NewPostActivity.class));
+                startActivityForResult(new Intent(MainActivity.this,NewPostActivity.class),NEW_POST);
             }
         });
 
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        ActionBar actionBar = getSupportActionBar();
+        actionBar = getSupportActionBar();
         if(actionBar!=null){
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.user_small);
+
         }
 
         NavigationView navigationView = (NavigationView)findViewById(R.id.nav_view);
@@ -104,21 +108,29 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         Log.d("back", "succ");
-        switch (requestCode){
-            case SIGN_IN:
-                if(resultCode==RESULT_OK){
-                    User user1 = (User)data.getSerializableExtra("usr_data");
-                    circleImageView.setImageBitmap(Util.byte2Bitmap(user1.getAvatar()));
-                    usrName.setText(user1.getName());
+        if(resultCode==RESULT_OK){
+            switch (requestCode){
+                case SIGN_IN:
+                case SIGN_UP:
+                    user = (User)data.getSerializableExtra("usr_data");
+                    Bitmap avatar = mUtil.byte2Bitmap(user.getAvatar());
+                    actionBar.setHomeAsUpIndicator(new BitmapDrawable(avatar));
+                    circleImageView.setImageBitmap(avatar);
+                    usrName.setText(user.getName());
+                    break;
+                case NEW_POST:
+                    Post post = (Post)data.getSerializableExtra("new_post");
+                    PostFragment postFragment = (PostFragment)mFragmentAdapter.getFragment(1);
+                    if(postFragment.mPostList!=null){
+                        postFragment.mPostList.add(post);
+                    }
+                    if(postFragment.postListAdapter!=null){
+                        postFragment.postListAdapter.notifyItemInserted(postFragment.mPostList.size());
+                    }
+                    break;
 
-                }
-                break;
-            case SIGN_UP:
-                if(resultCode==RESULT_OK){
-                    User user2 = (User)data.getSerializableExtra("usr_data");
-                    circleImageView.setImageBitmap(Util.byte2Bitmap(user2.getAvatar()));
-                    usrName.setText(user2.getName());
-                }
+            }
         }
+
     }
 }
