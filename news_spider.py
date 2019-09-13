@@ -5,7 +5,7 @@ import json
 def main():
     # 因为我太菜了不懂怎么爬那个表只能先用selenium了
     br = webdriver.Chrome()
-    url = "http://finance.sina.com.cn/roll/index.d.html"
+    url = "http://finance.sina.com.cn/roll/index.d.html?cid=57006&page=1"
     br.get(url)
     data = []
     end = False
