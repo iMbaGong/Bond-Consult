@@ -135,7 +135,8 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
 
     public void addPost(Bitmap comment_avatar, String comment_name, String comment_content,  String comment_time)
     {
-        Comment comment=new Comment(comment_avatar,comment_name,comment_content,comment_time);
+//        Comment comment=new Comment(comment_avatar,comment_name,comment_content,comment_time);
+        Comment comment=new Comment(new User(),comment_content,comment_time);
         commentList.add(comment);
         commentAdapter.notifyItemInserted(commentList.size()-1);
     }

@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".BondInfoActivity" />
+        <activity android:name=".NewsActivity" />
         <activity android:name=".BondRankActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".LoginActivity" />

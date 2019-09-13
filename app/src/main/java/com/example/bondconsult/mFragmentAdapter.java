@@ -27,7 +27,7 @@ public class mFragmentAdapter extends FragmentPagerAdapter {
         } else if (position == 1) {
             return new PostFragment();
         } else if (position == 2) {
-            return new NewsFragment();
+            return new NewsListFragment();
         }
         return null;
     }

@@ -8,9 +8,9 @@ import java.util.Date;
 public class Comment {
     private User user;
     private String commentContent;
-    private Date commentTime;
-
-    public Comment(User suser, String commentContent, Date commentTime) {
+//    private Date commentTime;
+    private String commentTime;
+    public Comment(User suser, String commentContent, String commentTime) {
         this.user = suser;
         this.commentContent = commentContent;
         this.commentTime = commentTime;
@@ -24,7 +24,7 @@ public class Comment {
     public String getCommentContent(){
         return commentContent;
     }
-    public Date getCommentTime(){
+    public String getCommentTime(){
         return commentTime;
     }
 }

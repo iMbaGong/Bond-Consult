@@ -40,7 +40,7 @@ public class PostFragment extends Fragment {
 
         view = inflater.inflate(R.layout.fragment_post,container,false);
         mPostList = new ArrayList<>();
-        new DownloadTask().execute();
+//        new DownloadTask().execute();
         return view;
     }
 
