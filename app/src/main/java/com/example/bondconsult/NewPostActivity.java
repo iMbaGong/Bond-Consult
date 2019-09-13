@@ -50,6 +50,7 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
 
     public static final int ADD_PICTURE =1;
 
+    private EditText postTitle;
     private EditText editText;
     private RecyclerView picRecyclerView;
     private Adapter adapter;
@@ -68,6 +69,7 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
         Button addPicture=(Button)findViewById(R.id.add_picture);
         Button exitButton=(Button)findViewById(R.id.exit_button);
         Button sendButton=(Button)findViewById(R.id.send_button);
+        postTitle=(EditText)findViewById(R.id.post_title);
         editText=(EditText)findViewById(R.id.edit_text);
         picRecyclerView=(RecyclerView) findViewById(R.id.recycler_view);
 
@@ -82,8 +84,8 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
         picRecyclerView.setAdapter(adapter);
 
         //使输入框获得焦点
-        editText.requestFocus();
-
+//        editText.requestFocus();
+            postTitle.requestFocus();
     }
 
     @Override
@@ -110,32 +112,13 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.send_button:
                 //TODO: 发布按钮
-            {
                 if(!editText.getText().toString().isEmpty()&&
                         adapter.getItemCount()>0){
-                    Intent intent=getIntent();
-                    User user = (User) intent.getSerializableExtra("user");
-                    Post post = new Post(
-                            "title",//TODO title
-                            mUtil.getCurrentTime(),
-                            editText.getText().toString(),
-                            user,
-                            0,
-                            0
-                    );
-                    intent.putExtra("post_text",editText.getText().toString());
-                    Bitmap bitmap= BitmapFactory.decodeResource(getResources(),R.drawable.totoro);
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                    byte[] bitmapByte = baos.toByteArray();
-                    intent.putExtra("post_picture", bitmapByte);
-
-                    setResult(RESULT_OK,intent);
+                        new UploadTask().execute();
                 }
-                finish();
-            }
                 break;
-                default:break;
+            default:
+                break;
 
         }
     }
@@ -272,7 +255,7 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
                 User user = (User) intent.getSerializableExtra("user");
                 String time = mUtil.getCurrentTime();
                 Post post = new Post(
-                        "title",//TODO title
+                        postTitle.getText().toString(),
                         time,
                         editText.getText().toString(),
                         user,
@@ -286,7 +269,7 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
                         .build();
                 MultipartBody.Builder builder = new MultipartBody.Builder();
                 builder.setType(MultipartBody.FORM);
-                builder.addFormDataPart("title","title");//TODO title
+                builder.addFormDataPart("title",postTitle.getText().toString());
                 builder.addFormDataPart("user",new Gson().toJson(user));
                 builder.addFormDataPart("text",editText.getText().toString());
 
@@ -306,6 +289,21 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
                 return false;
             }
             return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            super.onPostExecute(aBoolean);
+            progressDialog.dismiss();
+            if(!aBoolean){
+                Toast.makeText(NewPostActivity.this,"Fail in connect",Toast.LENGTH_SHORT).show();
+            }else if(res){
+                finish();
+            }
+            else {
+                Toast.makeText(NewPostActivity.this,"Exist account",Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
