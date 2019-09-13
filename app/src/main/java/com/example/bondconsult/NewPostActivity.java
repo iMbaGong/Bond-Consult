@@ -36,6 +36,7 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
 
     public static final int ADD_PICTURE =1;
 
+    private EditText postTitle;
     private EditText editText;
     private RecyclerView picRecyclerView;
     private Adapter adapter;
@@ -54,6 +55,7 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
         Button addPicture=(Button)findViewById(R.id.add_picture);
         Button exitButton=(Button)findViewById(R.id.exit_button);
         Button sendButton=(Button)findViewById(R.id.send_button);
+        postTitle=(EditText)findViewById(R.id.post_title);
         editText=(EditText)findViewById(R.id.edit_text);
         picRecyclerView=(RecyclerView) findViewById(R.id.recycler_view);
 
@@ -68,8 +70,8 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
         picRecyclerView.setAdapter(adapter);
 
         //使输入框获得焦点
-        editText.requestFocus();
-
+//        editText.requestFocus();
+            postTitle.requestFocus();
     }
 
     @Override
@@ -100,6 +102,7 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
                 if(!editText.getText().toString().isEmpty()&&
                         adapter.getItemCount()>0){
                     Intent intent=new Intent(NewPostActivity.this,PostBar.class);
+                    intent.putExtra("post_title",postTitle.getText().toString());
                     intent.putExtra("post_text",editText.getText().toString());
                     Bitmap bitmap= BitmapFactory.decodeResource(getResources(),R.drawable.totoro);
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
