@@ -2,31 +2,29 @@ package com.example.bondconsult;
 
 
 import android.graphics.Bitmap;
-import android.widget.ScrollView;
+
+import java.util.Date;
 
 public class Comment {
-    private Bitmap commentAvatar;
-    private String commentName;
     private User user;
     private String commentContent;
-    private String commentTime;
+    private Date commentTime;
 
-    public Comment(Bitmap commentAvatar, String commentName, String commentContent, String commentTime) {
-        this.commentAvatar = commentAvatar;
-        this.commentName = commentName;
+    public Comment(User suser, String commentContent, Date commentTime) {
+        this.user = suser;
         this.commentContent = commentContent;
         this.commentTime = commentTime;
     }
     public Bitmap getCommentAvatar(){
-        return commentAvatar;
+        return mUtil.byte2Bitmap(user.getAvatar());
     }
     public String getCommentName(){
-        return commentName;
+        return user.getName();
     }
     public String getCommentContent(){
         return commentContent;
     }
-    public String getCommentTime(){
+    public Date getCommentTime(){
         return commentTime;
     }
 }

@@ -30,7 +30,7 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post);
+        setContentView(R.layout.activity_post) ;
 
         ActionBar actionBar=getSupportActionBar();
         if(actionBar!=null){
