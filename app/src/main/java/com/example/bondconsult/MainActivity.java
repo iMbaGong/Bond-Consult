@@ -20,6 +20,8 @@ import android.view.View;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
+import com.ToxicBakery.viewpager.transforms.RotateUpTransformer;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         mFragmentAdapter mFragmentAdapter = new mFragmentAdapter(getSupportFragmentManager());
         ViewPager viewPager = (ViewPager)findViewById(R.id.view_pager);
         viewPager.setAdapter(mFragmentAdapter);
+        viewPager.setPageTransformer(true, new RotateUpTransformer());
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 

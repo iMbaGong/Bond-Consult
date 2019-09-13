@@ -38,14 +38,34 @@
             android:layout_gravity="center_vertical"
             android:inputType="textPassword" />
     </LinearLayout>
-    <Button
-        android:id="@+id/login_button"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="登录" />
-    <Button
-        android:id="@+id/signup_button"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="注册" />
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+            <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+                android:id="@+id/login_button"
+                android:layout_centerHorizontal="true"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:textSize="18sp"
+                android:text="登录" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+            <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+                android:id="@+id/signup_button"
+                android:layout_centerHorizontal="true"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:textSize="18sp"
+                android:text="注册" />
+        </RelativeLayout>
+    </LinearLayout>
+
 </LinearLayout>

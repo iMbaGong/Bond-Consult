@@ -1,6 +1,5 @@
 package com.example.bondconsult;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.IntRange;
@@ -14,6 +13,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
+import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
 
 import org.json.JSONObject;
 
@@ -26,7 +27,7 @@ import okhttp3.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private ProgressDialog progressDialog;
+    private QMUITipDialog tipDialog;
     EditText usernameText;
     EditText passwordText;
 
@@ -45,11 +46,12 @@ public class LoginActivity extends AppCompatActivity {
         Button signupButton=(Button)findViewById(R.id.signup_button);
         usernameText=(EditText)findViewById(R.id.username_text);
         passwordText=(EditText)findViewById(R.id.password_text);
-        progressDialog = new ProgressDialog(LoginActivity.this);
-        progressDialog.setCancelable(false);
-        progressDialog.setTitle("Connecting");
-        progressDialog.setMessage("Loading");
 
+
+        tipDialog = new QMUITipDialog.Builder(LoginActivity.this)
+                .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
+                .setTipWord("Connecting")
+                .create();
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog.show();
+            tipDialog.show();
         }
 
         @Override
@@ -121,7 +123,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            progressDialog.dismiss();
+            tipDialog.dismiss();
             if(!aBoolean){
                 Toast.makeText(LoginActivity.this,"Fail in connect",Toast.LENGTH_SHORT).show();
             }else if(res){

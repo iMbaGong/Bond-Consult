@@ -34,7 +34,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/colorPrimary"
-                app:tabIndicatorColor="#ffffffff"
+                app:tabSelectedTextColor="@color/app_color_blue_2"
+                app:tabIndicatorColor="@color/app_color_blue_2"
                 app:tabTextAppearance="@style/TextAppearance.AppCompat.Large"/>
         </android.support.design.widget.AppBarLayout>
 
@@ -44,6 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
+            app:backgroundTint="@color/app_color_blue_2"
             app:srcCompat="@drawable/icon_compile" />
     </android.support.design.widget.CoordinatorLayout>
 

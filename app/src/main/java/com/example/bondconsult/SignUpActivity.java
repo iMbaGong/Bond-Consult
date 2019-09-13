@@ -2,7 +2,6 @@ package com.example.bondconsult;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -28,6 +27,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -52,7 +53,8 @@ public class SignUpActivity extends AppCompatActivity {
     EditText usernameText;
     EditText passwordText;
 
-    private ProgressDialog progressDialog;
+
+    private QMUITipDialog tipDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -218,11 +220,11 @@ public class SignUpActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = new ProgressDialog(SignUpActivity.this);
-            progressDialog.setCancelable(false);
-            progressDialog.setTitle("Connecting");
-            progressDialog.setMessage("Loading");
-            progressDialog.show();
+            tipDialog = new QMUITipDialog.Builder(SignUpActivity.this)
+                    .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
+                    .setTipWord("Connecting")
+                    .create();
+            tipDialog.show();
         }
 
         @Override
@@ -268,7 +270,7 @@ public class SignUpActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            progressDialog.dismiss();
+            tipDialog.dismiss();
             if(!aBoolean){
                 Toast.makeText(SignUpActivity.this,"Fail in connect",Toast.LENGTH_SHORT).show();
             }else if(res){
