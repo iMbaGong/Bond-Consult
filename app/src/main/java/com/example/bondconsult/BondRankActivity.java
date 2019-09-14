@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog;
+
 import org.json.JSONArray;
 import org.litepal.crud.DataSupport;
 
@@ -27,7 +29,7 @@ public class BondRankActivity extends AppCompatActivity {
     /*******************债券排名*******************/
 
     static public List<Bond> bondList;
-    private ProgressDialog progressDialog;
+    private QMUITipDialog tipDialog;
     private RecyclerView recyclerView;
     private BondAdapter bondAdapter;
 
@@ -57,10 +59,10 @@ public class BondRankActivity extends AppCompatActivity {
             bondList=DataSupport.findAll(Bond.class);
         Log.d("database", "size:"+bondList.size());
         if(bondList.size()==0){
-            progressDialog = new ProgressDialog(BondRankActivity.this);
-            progressDialog.setCancelable(false);
-            progressDialog.setTitle("Downloading Data");
-            progressDialog.setMessage("Loading");
+            tipDialog = new QMUITipDialog.Builder(BondRankActivity.this)
+                    .setIconType(QMUITipDialog.Builder.ICON_TYPE_LOADING)
+                    .setTipWord("Loading")
+                    .create();
             new DownloadDataTask().execute();
         }else {
 
@@ -91,7 +93,7 @@ public class BondRankActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog.show();
+            tipDialog.show();
         }
 
         @Override
@@ -118,7 +120,7 @@ public class BondRankActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            progressDialog.dismiss();
+            tipDialog.dismiss();
             if(!aBoolean){
                 Toast.makeText(BondRankActivity.this,"Fail",Toast.LENGTH_SHORT).show();
             }else {

@@ -60,9 +60,10 @@
             android:layout_gravity="center_vertical"
             android:inputType="textPassword" />
     </LinearLayout>
-    <Button
+    <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
         android:id="@+id/signup_button"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:textSize="18sp"
         android:text="注册" />
 </LinearLayout>

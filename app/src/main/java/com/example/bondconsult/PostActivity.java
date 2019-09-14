@@ -149,6 +149,7 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
     public class upLoadTask extends AsyncTask<Void,Integer,Boolean>{
         private ProgressDialog progressDialog;
 
@@ -205,6 +206,7 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
             commentsView.setAdapter(commentAdapter);
 
         }
+
     }
 
 

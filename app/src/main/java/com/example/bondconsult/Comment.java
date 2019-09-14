@@ -12,6 +12,7 @@ public class Comment {
     private String commentContent;
     private String commentTime;
 
+
     public Comment(User suser, String commentContent, String commentTime) {
         this.user = suser;
         this.commentContent = commentContent;

@@ -1,35 +1,41 @@
 package com.example.bondconsult;
 
-import android.graphics.Bitmap;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 
-public class NewsFragment extends Fragment {
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_news,container,false);
+public class NewsActivity extends AppCompatActivity {
 
-        final WebView webView=(WebView)view.findViewById(R.id.web_view);
-        webView.loadUrl("http://bond.eastmoney.com/news/czqxw.html");
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_news);
+
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
+        Intent intent = getIntent();
+        String link = intent.getStringExtra("link");
+
+        final WebView webView=(WebView)findViewById(R.id.web_view);
+        webView.loadUrl(link);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new MyWebViewClient());
 
-        Button homeButton=(Button)view.findViewById(R.id.home_button);
-        Button backButton=(Button)view.findViewById(R.id.back_button);
-        Button forwardButton=(Button)view.findViewById(R.id.forward_button);
+        Button homeButton=(Button)findViewById(R.id.home_button);
+        Button backButton=(Button)findViewById(R.id.back_button);
+        Button forwardButton=(Button)findViewById(R.id.forward_button);
         homeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,12 +58,11 @@ public class NewsFragment extends Fragment {
                 }
             }
         });
-        return view;
-    }
 
+    }
 }
 
-class MyWebViewClient extends WebViewClient{
+class MyWebViewClient extends WebViewClient {
     @Override
     public boolean shouldOverrideUrlLoading(WebView webView, WebResourceRequest request){
         webView.loadUrl(request.getUrl().toString());

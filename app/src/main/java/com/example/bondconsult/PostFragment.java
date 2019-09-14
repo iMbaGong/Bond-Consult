@@ -65,6 +65,7 @@ public class PostFragment extends Fragment {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+
         return view;
     }
     public void startTask(){
