@@ -224,8 +224,6 @@ public class SignUpActivity extends AppCompatActivity {
             try{
                 MultipartBody.Builder builder = new MultipartBody.Builder();
                 builder.setType(MultipartBody.FORM);
-                        /*builder.addFormDataPart("avatar",user.getName()+"_avatar",
-                                RequestBody.create(MediaType.parse("image/png"),byteAvatar));*/
                 builder.addFormDataPart("avatar",strAvatar);
                 builder.addFormDataPart("name",usernameText.getText().toString());
                 builder.addFormDataPart("psw",passwordText.getText().toString());//todo 加密

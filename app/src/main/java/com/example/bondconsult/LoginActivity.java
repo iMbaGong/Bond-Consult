@@ -72,6 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    ////thread:login////
     public class SignInTask extends AsyncTask<Void,Integer,Boolean>{
 
         private boolean res=true;
@@ -91,6 +92,7 @@ public class LoginActivity extends AppCompatActivity {
                         .build();
                 MultipartBody.Builder builder = new MultipartBody.Builder();
                 builder.setType(MultipartBody.FORM);
+                ////add msg////
                 builder.addFormDataPart("name",usernameText.getText().toString());
                 builder.addFormDataPart("psw",passwordText.getText().toString());//TODO 加密
                 Request request = new Request.Builder()
@@ -100,6 +102,7 @@ public class LoginActivity extends AppCompatActivity {
                 Response response = client.newCall(request).execute();
                 String resBody = response.body().string();
                 Log.d("res", "length:"+resBody.length());
+                ////get the user_info and parse it////
                 JSONObject jsonObject = new JSONObject(resBody);
                 User user = User.createByJson(jsonObject);
                 Log.d("res", "id:"+user.getId()+"; avatarLength:"+user.getAvatar().length());

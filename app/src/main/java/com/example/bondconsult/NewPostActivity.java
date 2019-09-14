@@ -112,7 +112,7 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.send_button:
                 //TODO: 发布按钮
-                if(!editText.getText().toString().isEmpty()&&
+                if(!editText.getText().toString().isEmpty()||
                         adapter.getItemCount()>0){
                         new UploadTask().execute();
                 }

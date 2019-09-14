@@ -70,7 +70,7 @@ public class PostFragment extends Fragment {
     public void startTask(){
         new DownloadTask().execute();
     }
-
+    ////download post_info////
     public class DownloadTask extends AsyncTask<Void,Integer,Boolean>{
 
         private ProgressDialog progressDialog;
@@ -93,18 +93,14 @@ public class PostFragment extends Fragment {
                         .readTimeout(20, TimeUnit.SECONDS)
                         .connectTimeout(20, TimeUnit.SECONDS)
                         .writeTimeout(20,TimeUnit.SECONDS)
-
                         .build();
-                /*MultipartBody.Builder builder = new MultipartBody.Builder();
-                builder.setType(MultipartBody.FORM);
-                builder.addFormDataPart("recognize","tongji");*/
                 Request request = new Request.Builder()
                         .url("http://108.61.223.76/get_posts.php")
-                        //.post(builder.build())
                         .build();
                 Response response = client.newCall(request).execute();
                 String resBody = response.body().string();
                 Log.d("res in postFrag", "length:"+resBody.length());
+                ////parse into post_list////
                 JSONArray jsonArray = new JSONArray(resBody);
                 for(int i=0;i<jsonArray.length();i++){
                     JSONObject  jsonObject = jsonArray.getJSONObject(i);
