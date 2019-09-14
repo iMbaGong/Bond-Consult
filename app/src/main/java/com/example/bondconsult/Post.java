@@ -107,6 +107,14 @@ public class Post implements Serializable {
         this.commNum += commNum;
     }
 
+    public void setThumbUp(int thumbUp) {
+        this.thumbUp = thumbUp;
+    }
+
+    public void setCommNum(int commNum) {
+        this.commNum = commNum;
+    }
+
     public List<Comment> getCommentList() {
         return commentList;
     }

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -34,7 +35,19 @@ public class PostFragment extends Fragment {
     RecyclerView recyclerView;
     PostListAdapter postListAdapter;
     View view;
+    //是否可见
+    public boolean isVisible = false;
+    //是否初始化完成
+    public boolean isInit = false;
+    //是否已经加载过
+    public boolean isLoadOver = false;
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        this.isVisible = isVisibleToUser;
+        setParam();
+    }
 
     @Nullable
     @Override
@@ -42,6 +55,16 @@ public class PostFragment extends Fragment {
 
         view = inflater.inflate(R.layout.fragment_post,container,false);
         mPostList = new ArrayList<>();
+        isInit = true;
+        setParam();
+        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.swipe);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                startTask();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
         return view;
     }
     public void startTask(){
@@ -67,9 +90,10 @@ public class PostFragment extends Fragment {
             try{
                 if(mPostList.size()>0)mPostList.clear();
                 OkHttpClient client = new OkHttpClient.Builder()
-                        .readTimeout(0, TimeUnit.SECONDS)
-                        .connectTimeout(0, TimeUnit.SECONDS)
-                        .writeTimeout(0,TimeUnit.SECONDS)
+                        .readTimeout(20, TimeUnit.SECONDS)
+                        .connectTimeout(20, TimeUnit.SECONDS)
+                        .writeTimeout(20,TimeUnit.SECONDS)
+
                         .build();
                 /*MultipartBody.Builder builder = new MultipartBody.Builder();
                 builder.setType(MultipartBody.FORM);
@@ -103,13 +127,28 @@ public class PostFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
             progressDialog.dismiss();
-            recyclerView = view.findViewById(R.id.post_list_rev);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            postListAdapter = new PostListAdapter(mPostList);
-            recyclerView.setAdapter(postListAdapter);
+            if(!aBoolean){
+                isVisible = false;
+                //是否初始化完成
+                isInit = false;
+                //是否已经加载过
+                isLoadOver = false;
+            }
+            else {
+                recyclerView = view.findViewById(R.id.post_list_rev);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                postListAdapter = new PostListAdapter(mPostList);
+                recyclerView.setAdapter(postListAdapter);
+            }
         }
 
-
+    }
+    private void setParam() {
+        if (isInit && !isLoadOver && isVisible) {
+            isLoadOver = true;
+            startTask();
+        }
     }
 }

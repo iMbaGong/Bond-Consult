@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     mFragmentAdapter mFragmentAdapter;
     PostFragment postFragment;
 
+
     final int SIGN_IN = 1;
     final int SIGN_UP = 2;
     final int NEW_POST = 3;
@@ -41,7 +42,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         mFragmentAdapter = new mFragmentAdapter(getSupportFragmentManager());
+        //postFragment = (PostFragment)mFragmentAdapter.getFragment(1);
         ViewPager viewPager = (ViewPager)findViewById(R.id.view_pager);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -51,9 +54,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int i) {
-                if(i==1)
-                postFragment = (PostFragment)mFragmentAdapter.getFragment(1);
-                postFragment.startTask();
+                Log.d("slide", ":"+mUtil.isInit);
+                mUtil.isInit = true;
             }
 
             @Override

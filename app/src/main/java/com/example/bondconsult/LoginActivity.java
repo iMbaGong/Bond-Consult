@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
             try{
                 OkHttpClient client = new OkHttpClient.Builder()
                         .readTimeout(0,TimeUnit.SECONDS)
-                        .connectTimeout(0, TimeUnit.SECONDS)
+                        .connectTimeout(20, TimeUnit.SECONDS)
                         .writeTimeout(0,TimeUnit.SECONDS)
                         .build();
                 MultipartBody.Builder builder = new MultipartBody.Builder();

@@ -1,8 +1,10 @@
 package com.example.bondconsult;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,10 +16,22 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class PostActivity extends AppCompatActivity implements View.OnClickListener {
     private RecyclerView commentsView;
@@ -27,6 +41,9 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
     private TextView thumbupNum;
     private TextView forwardNum;
     private TextView commentNum;
+
+
+
 
 
 
@@ -121,14 +138,76 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
                             commentText,
                             mUtil.getCurrentTime())
                     );
-                    commentAdapter.notifyItemInserted(commentList.size()-1);
+                    new upLoadTask().execute();
+                    commentAdapter.notifyDataSetChanged();
                     commentNum.setText(String.valueOf(commentList.size()));
+                    thumbupNum.setText(String.valueOf(post.getThumbUp()));
                     post.addCommNum(1);
                 }
                 break;
                 default:
         }
     }
+
+    public class upLoadTask extends AsyncTask<Void,Integer,Boolean>{
+        private ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(PostActivity.this);
+            progressDialog.setCancelable(false);
+            progressDialog.setTitle("Loading data");
+            progressDialog.setMessage("Loading");
+            progressDialog.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            try{
+                OkHttpClient client = new OkHttpClient.Builder()
+                        .readTimeout(20, TimeUnit.SECONDS)
+                        .connectTimeout(20, TimeUnit.SECONDS)
+                        .writeTimeout(20,TimeUnit.SECONDS)
+                        .build();
+                MultipartBody.Builder builder = new MultipartBody.Builder();
+                builder.setType(MultipartBody.FORM);
+                Gson gson = new Gson();
+                builder.addFormDataPart("new_comment",gson.toJson(commentList.get(commentList.size()-1)));
+                builder.addFormDataPart("time",post.getPost_time());
+                Log.d("send:", post.getPost_time());
+                Request request = new Request.Builder()
+                        .url("http://108.61.223.76/add_comment.php")
+                        .post(builder.build())
+                        .build();
+                Response response = client.newCall(request).execute();
+                String resBody = response.body().string();
+                Log.d("res for add comment", "length:"+resBody.substring(0,resBody.length()>20?20:resBody.length()));
+
+                commentList.clear();
+
+                commentList = gson.fromJson(resBody,new TypeToken<List<Comment>>(){}.getType());
+
+                Log.d("parse", "listsize:"+commentList.size());
+
+            }catch (Exception e){
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            progressDialog.dismiss();
+            commentAdapter=new CommentAdapter(commentList);
+            commentsView.setAdapter(commentAdapter);
+
+        }
+    }
+
+
 
 
 }
