@@ -68,7 +68,7 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
         post = PostFragment.mPostList.get(position);
         if(post.getCommentList()==null)
             commentList = new ArrayList<>();
-        else commentList = post.getCommentList();
+        else commentList = post.commentList;
 
 
         //TODO：设置帖子内容
@@ -76,7 +76,11 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
         posterName.setText(post.getPoster_name());
         postTime.setText(post.getPost_time());
         postText.setText(post.getPost_text());
-        //postImage.setImageResource(R.drawable.totoro);
+        if(post.getPicList()!=null){
+            postImage.setImageBitmap(mUtil.base64ToBitmap(post.getPicList().get(0)));
+            Log.d("onCreate", ":load the pic");
+        }
+
         //todo image
 
         commentsView=(RecyclerView)findViewById(R.id.comment_view);

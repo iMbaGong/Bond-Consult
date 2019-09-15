@@ -15,7 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -111,9 +113,13 @@ public class PostFragment extends Fragment {
                             jsonObject.getString("time"),
                             jsonObject.getString("user"),
                             jsonObject.getInt("thumb"),
-                            jsonObject.getInt("comment_num")//todo comments
+                            jsonObject.getInt("comment_num"),
+                            jsonObject.getString("pic"),
+                            jsonObject.getString("comments")
+                            //todo comments
                     ));
-
+                    //Log.d("pic:", jsonObject.getString("pic"));
+                    //Log.d("pic", "size:"+mPostList.get(mPostList.size()-1).getPicList().size());
                 }
             }catch (Exception e){
                 e.printStackTrace();

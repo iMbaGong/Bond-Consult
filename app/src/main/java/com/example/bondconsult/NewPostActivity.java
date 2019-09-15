@@ -56,6 +56,7 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
     private Adapter adapter;
 
     private List<myPicture> pictureList=new ArrayList<>();
+    private List<String> tempPicList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -225,7 +226,7 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
 
 
             myPicture picture=new myPicture(bitmap);
-
+            tempPicList.add(mUtil.bitmapToBase64(bitmap));
             pictureList.add(pictureList.size(),picture);
             adapter.notifyItemInserted(pictureList.size()-1);
         }
@@ -253,7 +254,6 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
             try{
                 Intent intent=getIntent();
                 User user = mUtil.user;
-                //User user = (User) intent.getSerializableExtra("user");
                 String time = mUtil.getCurrentTime();
                 Post post = new Post(
                         postTitle.getText().toString(),
@@ -261,12 +261,14 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
                         editText.getText().toString(),
                         user,
                         0,
-                        0
+                        0,
+                        tempPicList
+                        ///don't need to add picList (in recycleView)
                 );
                 OkHttpClient client = new OkHttpClient.Builder()
-                        .connectTimeout(0, TimeUnit.SECONDS)
-                        .readTimeout(0, TimeUnit.SECONDS)
-                        .writeTimeout(0, TimeUnit.SECONDS)
+                        .connectTimeout(20, TimeUnit.SECONDS)
+                        .readTimeout(20, TimeUnit.SECONDS)
+                        .writeTimeout(20, TimeUnit.SECONDS)
                         .build();
                 MultipartBody.Builder builder = new MultipartBody.Builder();
                 builder.setType(MultipartBody.FORM);
@@ -274,6 +276,7 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
                 builder.addFormDataPart("user",new Gson().toJson(user));
                 builder.addFormDataPart("text",editText.getText().toString());
                 builder.addFormDataPart("time",time);
+                builder.addFormDataPart("pic",new Gson().toJson(tempPicList));
                 Request request = new Request.Builder()
                         .url("http://108.61.223.76/new_post.php")
                         .post(builder.build())
@@ -297,7 +300,6 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
-            super.onPostExecute(aBoolean);
             super.onPostExecute(aBoolean);
             progressDialog.dismiss();
             if(!aBoolean){

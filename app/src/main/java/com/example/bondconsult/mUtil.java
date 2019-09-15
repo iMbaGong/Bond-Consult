@@ -11,7 +11,7 @@ import java.util.TimeZone;
 public class mUtil {
 ////some data and convenient func////
     static User user;
-    static boolean isInit = false;
+
     static byte[] bitmap2Bytes(Bitmap bitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
