@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
@@ -188,11 +189,12 @@ public class PostActivity extends AppCompatActivity implements View.OnClickListe
                 Response response = client.newCall(request).execute();
                 String resBody = response.body().string();
                 Log.d("res for add comment", "length:"+resBody.substring(0,resBody.length()>20?20:resBody.length()));
-
-                commentList.clear();
-
-                commentList = gson.fromJson(resBody,new TypeToken<List<Comment>>(){}.getType());
-
+                JSONObject jsonObject = new JSONObject(resBody);
+                if(!jsonObject.getString("state").equals("failed")){
+                    Log.d("com state:", "success");
+                    commentList.clear();
+                    commentList = gson.fromJson(resBody,new TypeToken<List<Comment>>(){}.getType());
+                }
                 Log.d("parse", "listsize:"+commentList.size());
 
             }catch (Exception e){
